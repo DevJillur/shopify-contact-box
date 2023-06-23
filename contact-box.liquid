@@ -1,0 +1,251 @@
+{% unless template contains 'contact' %} 
+<div class="contact-box-wrapper" style="background: {{ section.settings.bg }};">
+  <div class="contact-box">
+    
+    {%- if section.settings.heading != blank -%}
+      <h2 class="title" style="color: {{ section.settings.text_color }} !important;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    
+    {%- if section.settings.subheading != blank -%}
+      <div class="subtitle" style="color: {{ section.settings.text_color }};">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+
+    
+    {% form 'contact' %}
+      
+      {% if form.posted_successfully? %}
+      <div class="form-notification success center" style="color: {{ section.settings.text_color }};">
+        <p>{{ 'templates.contact.form.post_success' | t }}</p>
+      </div>
+      {%- elsif form.errors %}
+      <div class="form-notification error center" style="color: {{ section.settings.text_color }};">
+        <p>{{ 'templates.contact.form.error_heading' | t }}</p>
+        <ul class="form-status-list caption-large" role="list">
+          <li>
+            <a href="#ContactForm-email" class="link">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+      
+      <div class="row contact-box-form" style="color: {{ section.settings.text_color }}; direction: rtl;">
+        
+          <div class="contact-box-input name">
+            <input type="text" id="contactFormName" autocomplete="name" name="contact[{{ 'templates.contact.form.name' | t }}]" placeholder="{{ 'templates.contact.form.name' | t }}" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" />
+          </div>
+        
+          <div class="contact-box-input email">
+              <input type="text" id="contactFormEmail" name="contact[email]" placeholder="{{ 'templates.contact.form.email' | t }}" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" />
+          </div>
+
+          <div class="contact-box-input telephone">
+              <input type="text" id="contactFormTelephone" name="contact[phone]" placeholder="{{ 'templates.contact.form.phone' | t }}" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" />
+          </div>
+        
+          <div class="contact-box-input submit">
+            <input type="submit" value="{{ 'templates.contact.form.send' | t }}" class="button">
+          </div>
+      </div>
+
+    
+    {% if section.settings.policy_text != blank %}
+      <div class="contact-policy">
+        <input type="checkbox" id="checkbox" required style="color: {{ section.settings.text_color }};">
+        <label for="checkbox" style="color: {{ section.settings.text_color }}; direction: rtl;">{{ section.settings.policy_text }}</label>
+      </div>
+    {% endif %}
+
+    {%- if section.settings.b_heading != blank -%}
+      <h2 class="title bottom" style="color: {{ section.settings.text_color }}; direction: rtl; margin-top: 10px !important;">{{ section.settings.b_heading | escape }}</h2>
+    {%- endif -%}
+      
+    {%- if section.settings.b_subheading != blank -%}
+      <div class="subtitle bottom" style="color: {{ section.settings.text_color }}; direction: rtl;">{{ section.settings.b_subheading }}</div>
+    {%- endif -%}
+    
+    {% endform %}
+  </div>
+</div>
+
+<style>
+  .contact-box-wrapper{
+    max-width: {{ section.settings.max_width }};
+    margin: auto;
+}
+  .contact-box {
+    box-shadow: 0 0 8px 2px #00000038;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
+}
+  .contact-box-input-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+    column-gap: 5px;
+}
+  .contact-box-form .name, .contact-box-form .email, .contact-box-form .telephone {
+    min-width: 250px;
+}
+  .contact-box-form .button {
+    min-width: 150px;
+    background: black;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1;
+    min-height: auto;
+    width: 100%;
+    font-size: 15px;
+    transition: .2s;
+}
+  .contact-box h2.title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+    margin-bottom: 10px !important;
+}
+  .contact-box .subtitle {
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 5px 0 !important;
+    padding: 0 !important;
+    line-height: 1.2;
+}
+  .contact-box .contact-policy {
+    text-align: center;
+    direction: rtl;
+    display: flex;
+    margin: 2px 0;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    column-gap: 10px;
+}
+  .contact-box .contact-policy #checkbox {
+    cursor: pointer;
+}
+  .contact-box .contact-policy label {
+    margin: 0 !important;
+}
+  .contact-box .contact-policy p {
+    font-size: 14px;
+    margin: 2px 0;
+}
+  
+.contact-box-form {
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    column-gap: 10px;
+    display: flex;
+    width: 100% !important;
+}
+
+.contact-box-form input {
+    font-size: 18px;
+    padding: 10px 5px;
+    text-align: left;
+    border: 1px solid #000;
+    border-radius: 3px;
+    width: 90%;
+    margin: auto;
+    outline: none;
+}
+
+.contact-box .subtitle.bottom p {
+    margin-bottom: 0;
+}
+  
+@media (max-width: 749px){
+  .contact-box-form {
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    row-gap: 10px;
+    width: 100% !important;
+}
+  .contact-box-form input {
+    width: 100%;
+}
+  .contact-box-input.submit {
+    text-align: center;
+}
+  .contact-box {
+    width: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+}
+</style>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Contact Box",
+  "settings": [
+    {
+      "type": "text",
+      "id": "max_width",
+      "label": "Max Width"
+    },
+    {
+      "id": "bg",
+      "type": "color",
+      "label": "Background",
+      "default": "#fff"
+    },
+    {
+      "id": "text_color",
+      "type": "color",
+      "label": "Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Contact form",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Text"
+    },
+    {
+      "type": "richtext",
+      "id": "policy_text",
+      "label": "Policy Text"
+    },
+    {
+      "type": "text",
+      "id": "b_heading",
+      "label": "Bottom Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "b_subheading",
+      "label": "Bottom Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Box",
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
